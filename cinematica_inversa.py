@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+#IN:
+#posicion deseada x_des
+#q0 inicial
+
+#OUT:
+#robot con efector final en posicion del x_des
+#1 Marker en la posicion espacial del efector final
+#1 Marker en la posicion espacial del x deseado
+
 import rospy
 from sensor_msgs.msg import JointState
 from markers import *
@@ -15,7 +24,7 @@ bmarker_des  = BallMarker(color['GREEN'])
 
 
 # Joint names
-jnames = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+#jnames = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
 
 # Desired position
 xd = np.array([0.42, 0.125, 0.349])
