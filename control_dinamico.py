@@ -8,14 +8,6 @@
 #OUT:
 #desplazamiento del robot hacia el punto indicado, asi como la aparicion de los markers, uno en el lugar deseado y otro en el efector final del robot
 
-# Configuracion articular inicial (en radianes)
-#q = np.array([0.0, -1.0, 1.7, -2.2, -1.6, 0.0])
-# Velocidad inicial
-#dq = np.array([0., 0., 0., 0., 0., 0.])
-# Configuracion articular deseada
-#qdes = np.array([1.0, -1.0, 1.0, 1.3, -1.5, 1.0])
-
-
 import rospy
 from sensor_msgs.msg import JointState
 from markers import *
