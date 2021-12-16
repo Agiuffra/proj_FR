@@ -22,10 +22,10 @@ pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
 bmarker_actual  = BallMarker(color['RED'])
 bmarker_deseado = BallMarker(color['GREEN'])
 # Archivos donde se almacenara los datos
-#fqact = open("/tmp/qactual.dat", "w")
-#fqdes = open("/tmp/qdeseado.dat", "w")
-#fxact = open("/tmp/xactual.dat", "w")
-#fxdes = open("/tmp/xdeseado.dat", "w")
+fqact = open("/tmp/qactual.dat", "w")
+fqdes = open("/tmp/qdeseado.dat", "w")
+fxact = open("/tmp/xactual.dat", "w")
+fxdes = open("/tmp/xdeseado.dat", "w")
 
 # Nombres de las articulaciones
 #jnames = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
@@ -53,9 +53,9 @@ jstate.position = q
 pub.publish(jstate)
 
 # Modelo del robot
-#modelo = rbdl.loadModel('../urdf/ur5_robot.urdf')
-#ndof   = modelo.q_size 	# Grados de libertad
-ndof = 6
+modelo = rbdl.loadModel('../urdf/ur5_robot.urdf')
+ndof   = modelo.q_size 	# Grados de libertad
+#ndof = 6
 
 # Frecuencia del envio (en Hz)
 freq = 20
@@ -78,8 +78,8 @@ t = 0.0
 zeros = np.zeros(ndof)      	# Vector de ceros
 tau   = np.zeros(ndof)      	# Para torque
 g 	= np.zeros(ndof)      	# Para la gravedad
-#c 	= np.zeros(ndof)      	# Para el vector de Coriolis+centrifuga
-#M 	= np.zeros([ndof, ndof])  # Para la matriz de inercia
+c 	= np.zeros(ndof)      	# Para el vector de Coriolis+centrifuga
+M 	= np.zeros([ndof, ndof])  # Para la matriz de inercia
 e 	= np.eye(6)           	# Vector identidad
 
 
@@ -95,36 +95,17 @@ while not rospy.is_shutdown():
 	jstate.header.stamp = rospy.Time.now()
 
 	# Almacenamiento de datos
-	#fxact.write(str(t)+' '+str(x[0])+' '+str(x[1])+' '+str(x[2])+'\n')
-	#fxdes.write(str(t)+' '+str(xdes[0])+' '+str(xdes[1])+' '+str(xdes[2])+'\n')
-	#fqact.write(str(t)+' '+str(q[0])+' '+str(q[1])+' '+ str(q[2])+' '+ str(q[3])+' '+str(q[4])+' '+str(q[5])+'\n ')
-	#fqdes.write(str(t)+' '+str(qdes[0])+' '+str(qdes[1])+' '+ str(qdes[2])+' '+ str(qdes[3])+' '+str(qdes[4])+' '+str(qdes[5])+'\n ')
+	fxact.write(str(t)+' '+str(x[0])+' '+str(x[1])+' '+str(x[2])+'\n')
+	fxdes.write(str(t)+' '+str(xdes[0])+' '+str(xdes[1])+' '+str(xdes[2])+'\n')
+	fqact.write(str(t)+' '+str(q[0])+' '+str(q[1])+' '+ str(q[2])+' '+ str(q[3])+' '+str(q[4])+' '+str(q[5])+'\n ')
+	fqdes.write(str(t)+' '+str(qdes[0])+' '+str(qdes[1])+' '+ str(qdes[2])+' '+ str(qdes[3])+' '+str(qdes[4])+' '+str(qdes[5])+'\n ')
 
 	# ----------------------------
 	# Control dinamico (COMPLETAR)
 	# ----------------------------
 	u = np.zeros(ndof)   # Reemplazar por la ley de control
 
-	#rbdl.InverseDynamics(modelo,q,zeros,zeros,g)
-	#Hallando matriz g:
-	#Jv1=
-	#Jv2=
-	#Jv11 = Jv1[0:3, 0]
-	#Jv12 = Jv1[0:3, 1]
-
-	#Jv21 = Jv2[0:3, 0]
-	#Jv22 = Jv2[0:3, 1]
-	#m1g0 = sp.Matrix([[0],
-#			[0],
-#			[-m1*g0]])
-	#m2g0 = sp.Matrix([[0],
-	#		[0],
-	#		[-m2*g0]])
-	#g1 = -Jv11.T*m1g0 - Jv21.T*m2g0
-	#g2 = -Jv12.T*m1g0 - Jv22.T*m2g0
-	#g = sp.Matrix([[g1],
-	#		[g2]])
-	#print("Matriz g: "); display(sp.simplify(g))
+	rbdl.InverseDynamics(modelo,q,zeros,zeros,g)
 	
 	error_q = qdes - q
 	error_dq = 0 - dq
@@ -146,7 +127,7 @@ while not rospy.is_shutdown():
 	# Esperar hasta la siguiente  iteracion
 	rate.sleep()
 
-#fqact.close()
-#fqdes.close()
-#fxact.close()
-#fxdes.close()
+fqact.close()
+fqdes.close()
+fxact.close()
+fxdes.close()
