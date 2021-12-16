@@ -1,5 +1,13 @@
 #!/usr/bin/env python
 
+#IN:
+#config q_deseado
+
+#OUT:
+#robot con las articulaciones indicadas
+#1 Marker en la posicion espacial del efector final
+
+
 import rospy
 from sensor_msgs.msg import JointState
 
@@ -12,7 +20,7 @@ bmarker = BallMarker(color['GREEN'])
 
 # Joint names
 #jnames = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint','wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
-# Joint Configuration
+# Joint Configuration (configuracion articular deseada)
 #q = [0.8, 0.1, 0.8, 0, 0, 0]
 
 # End effector with respect to the base
