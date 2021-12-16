@@ -6,7 +6,7 @@
 #pos articular inicial (q0)
 
 #OUT:
-#Movimiento hacia la posicion deseada
+#Movimiento hacia la posicion deseada (se guardaran datos de xactual xd, error)
 
 from __future__ import print_function
 import rospy
@@ -27,7 +27,13 @@ pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
 bmarker_current  = FrameMarker()
 # Marker for desired position
 bmarker_desired = FrameMarker(0.5)
- 
+
+# Archivos donde se almacenara los datos
+f_xpos = open("/tmp/xactual.dat", "w")
+f_xdes = open("/tmp/xdeseado.dat", "w")
+f_error = open("/tmp/xerror.dat", "w")
+
+
 # Joint names
 #jnames = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
 #          'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
@@ -110,6 +116,12 @@ while not rospy.is_shutdown():
   print(derror)
   e_der = -k*derror   
  
+  error = xpos-xpos_des
+  # Almacenamiento de datos
+  fxact.write(str(t)+' '+str(x[0])+' '+str(x[1])+' '+str(x[2])+'\n')
+  fxdes.write(str(t)+' '+str(xdes[0])+' '+str(xdes[1])+' '+str(xdes[2])+'\n')
+  fqact.write(str(t)+' '+str(error[0])+' '+str(error[1])+' '+ str(error[2])+ '\n ')
+ 
   n=np.linalg.matrix_rank(J); m=J.ndim               #np.linalg.det(J)==0
   
   # Realizacion de la pseudoinversa correspondiente
@@ -143,3 +155,7 @@ while not rospy.is_shutdown():
  
   # Wait for the next iteration
   rate.sleep()
+
+f_error.close()
+f_xpos.close()
+f_xdes.close()
