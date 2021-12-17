@@ -53,7 +53,7 @@ jstate.position = q
 pub.publish(jstate)
 
 # Modelo del robot
-modelo = rbdl.loadModel('../urdf/ur5_robot.urdf')
+modelo = rbdl.loadModel('../urdf/FR_Proyecto_Manipulador.xacro')
 ndof   = modelo.q_size 	# Grados de libertad
 #ndof = 6
 
